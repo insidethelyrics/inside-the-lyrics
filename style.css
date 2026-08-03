@@ -126,3 +126,54 @@ nav {
 }
 
 }
+/* Premium Effects */
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+.hero h1 {
+    animation: fadeIn 2s ease;
+}
+
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+
+button {
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+
+button:hover {
+    transform: scale(1.05);
+}
+
+
+header img {
+    border-radius: 50%;
+}
+
+
+@keyframes fadeIn {
+
+from {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+}
