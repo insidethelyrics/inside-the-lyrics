@@ -275,3 +275,31 @@ flex-direction: column;
 
 
 }
+/* =================================
+   LOGO + BANNER
+================================= */
+
+.brand-banner {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.center-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    z-index: 2;
+}
