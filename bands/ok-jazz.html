@@ -1859,98 +1859,32 @@
 
   </section>
 
-    <section class="related-archive">
-    <h2>🎸 Explore the OK Jazz Archives</h2>
+    
+<section class="related-archive">
+    <h2>🎼 Continue Exploring OK Jazz</h2>
 
     <p>
-        Discover the musicians who shaped OK Jazz, their instruments,
-        contributions and the changing line-ups throughout the orchestra's history.
+        Continue discovering the musicians, history and musical
+        legacy of this legendary Congolese orchestra.
     </p>
 
-    <a href="ok-jazz-musicians.html">
-        Explore the OK Jazz Musicians Directory →
-    </a>
+    <ul>
+        <li>
+            <a href="ok-jazz-musicians.html">
+                Explore the OK Jazz Musicians Directory →
+            </a>
+        </li>
+
+        <li>
+            <a href="ok-jazz-timeline.html">
+                Explore the OK Jazz Historical Timeline →
+            </a>
+        </li>
+
+        <li>
+            <a href="../bands.html">
+                Explore Other African Orchestras →
+            </a>
+        </li>
+    </ul>
 </section>
-</article>
-
-</main>
-
-<footer>
-  <h3>Inside the Lyrics with Sir Wakho</h3>
-  <p>Preserving Africa's musical heritage one story at a time.</p>
-</footer>
-
-<script>
-
-  const searchInput = document.getElementById("musicianSearch");
-  const roleFilter = document.getElementById("roleFilter");
-  const rows = Array.from(
-    document.querySelectorAll("#musicianRows tr")
-  );
-
-  const resultCount = document.getElementById("resultCount");
-
-  function filterMusicians() {
-
-    const query = searchInput.value.trim().toLowerCase();
-    const role = roleFilter.value;
-
-    let visible = 0;
-
-    rows.forEach(row => {
-
-      const matchesText =
-        row.textContent.toLowerCase().includes(query);
-
-      const matchesRole =
-        !role || row.dataset.role === role;
-
-      const show = matchesText && matchesRole;
-
-      row.hidden = !show;
-
-      if (show) visible++;
-
-    });
-
-    resultCount.textContent =
-      `Showing ${visible} of ${rows.length} musicians`;
-
-  }
-
-  searchInput.addEventListener("input", filterMusicians);
-
-  roleFilter.addEventListener("change", filterMusicians);
-
-  filterMusicians();
-
-</script>
-
-</body>
-</html>
-
-        <!-- ARCHIVE NOTE -->
-
-        <section>
-            <h2>📚 Archive Note</h2>
-
-            <p>
-                This history is being built progressively as part of
-                <strong>Inside the Lyrics with Sir Wakho</strong>.
-                Additional chapters, musicians, recordings and later
-                eras of OK Jazz will be added as the archive develops.
-            </p>
-        </section>
-
-    </article>
-
-</main>
-
-
-<footer>
-    <h3>Inside the Lyrics with Sir Wakho</h3>
-    <p>Preserving Africa's musical heritage one story at a time.</p>
-</footer>
-
-</body>
-</html>
