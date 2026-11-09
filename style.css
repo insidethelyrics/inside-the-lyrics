@@ -305,3 +305,43 @@ flex-direction: column;
     object-fit: contain;
     z-index: 2;
 }
+
+
+/* OK Jazz archive navigation */
+
+.related-archive {
+    background: linear-gradient(135deg, #34251a, #73502b);
+    color: #fff4dc;
+    padding: 25px;
+    margin: 30px 0;
+    border-radius: 12px;
+    border: 1px solid #b88945;
+}
+
+.related-archive h2 {
+    color: #e8c27a;
+    margin-top: 0;
+}
+
+.related-archive p {
+    line-height: 1.7;
+}
+
+.related-archive ul {
+    padding-left: 22px;
+}
+
+.related-archive li {
+    margin: 12px 0;
+}
+
+.related-archive a {
+    color: #f3d18c;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.related-archive a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
