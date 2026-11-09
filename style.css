@@ -340,6 +340,49 @@ flex-direction: column;
     font-weight: bold;
     text-decoration: none;
 }
+.related-archive {
+    margin: 40px auto;
+    padding: 25px;
+    max-width: 950px;
+    background: #f2e6cf;
+    border: 2px solid #a77b36;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.related-archive h2 {
+    color: #70451e;
+    margin-bottom: 15px;
+}
+
+.related-archive p {
+    color: #493723;
+    line-height: 1.7;
+}
+
+.archive-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.archive-links a {
+    display: inline-block;
+    padding: 12px 18px;
+    background: #70451e;
+    color: #fff4dc;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.archive-links a:hover {
+    background: #a77b36;
+    color: white;
+}
 
 .related-archive a:hover {
     color: #ffffff;
