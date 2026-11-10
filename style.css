@@ -502,6 +502,47 @@ button:focus-visible {
     outline-offset: 4px;
 }
 
+/* Zaïko Langa Langa musical family tree */
+
+.offshoot-tree {
+    text-align: center;
+    margin: 30px auto;
+    max-width: 700px;
+}
+
+.tree-level {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.tree-node {
+    width: 100%;
+    max-width: 440px;
+    padding: 18px;
+    background: var(--color-paper-light);
+    border: 1px solid var(--color-gold);
+    border-left: 5px solid var(--color-accent);
+    border-radius: 2px;
+    box-shadow: 0 3px 8px rgba(36, 30, 24, 0.08);
+}
+
+.tree-node h3 {
+    margin-top: 0;
+    color: var(--color-accent-dark);
+}
+
+.tree-node p {
+    margin-bottom: 5px;
+}
+
+.tree-arrow {
+    color: var(--color-gold);
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
 @media (max-width: 600px) {
     .site-header {
         padding: 0 16px 16px;
@@ -536,6 +577,10 @@ button:focus-visible {
     .listen-section {
         margin: 40px 18px 20px !important;
         width: auto;
+    }
+
+    .tree-node {
+        padding: 14px;
     }
 }
 
