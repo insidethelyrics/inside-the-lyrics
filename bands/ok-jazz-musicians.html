@@ -8,7 +8,6 @@
     <title>OK Jazz Musicians Directory | Inside the Lyrics</title>
 
     <meta name="description" content="Explore the musicians, singers, guitarists and instrumentalists named in the historical OK Jazz archive by Inside the Lyrics with Sir Wakho.">
-
     <meta name="author" content="Inside the Lyrics with Sir Wakho">
     <meta name="robots" content="index, follow">
 
@@ -16,21 +15,77 @@
     <link rel="icon" type="image/png" href="../images/favicon.png">
 
     <style>
+        .skip-link {
+            position: absolute;
+            top: -3rem;
+            left: 1rem;
+            z-index: 1000;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            background: #332719;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         .directory-tools {
             display: flex;
             flex-wrap: wrap;
+            align-items: end;
             gap: 10px;
             margin: 20px 0;
         }
 
-        .directory-tools input,
-        .directory-tools select {
+        .directory-field {
+            display: flex;
             flex: 1 1 220px;
-            padding: 12px;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .directory-tools input,
+        .directory-tools select,
+        .directory-tools button {
+            min-height: 44px;
+            padding: 10px 12px;
             border: 1px solid #9b8258;
             border-radius: 6px;
-            background: #fffdf8;
             font: inherit;
+        }
+
+        .directory-tools input,
+        .directory-tools select {
+            width: 100%;
+            background: #fffdf8;
+        }
+
+        .directory-tools button {
+            color: #fff;
+            background: #6b512f;
+            cursor: pointer;
+        }
+
+        .directory-tools button:hover {
+            background: #4e3b23;
+        }
+
+        :focus-visible {
+            outline: 3px solid #235e91;
+            outline-offset: 3px;
         }
 
         .directory-table-wrap {
@@ -56,689 +111,613 @@
             background: rgba(151, 116, 57, .16);
         }
 
-        .directory-table tr:hover td {
+        .directory-table tbody tr:hover td {
             background: rgba(151, 116, 57, .07);
         }
 
+        .directory-table [hidden] {
+            display: none;
+        }
+
         .archive-note {
-            border-left: 4px solid #9b7742;
             padding: 12px 16px;
             background: rgba(151, 116, 57, .08);
+            border-left: 4px solid #9b7742;
         }
 
         .directory-count {
-            font-weight: bold;
+            min-height: 1.5em;
             margin: 12px 0;
+            font-weight: bold;
         }
 
         @media (max-width: 600px) {
             .directory-tools {
-                display: block;
+                align-items: stretch;
+                flex-direction: column;
             }
 
-            .directory-tools input,
-            .directory-tools select {
-                width: 100%;
-                margin-bottom: 10px;
+            .directory-field {
+                flex-basis: auto;
             }
         }
     </style>
 </head>
 
 <body>
-
-<header class="site-header">
-
-    <div class="brand-banner">
-        <img src="../images/banner.jpg"
-             alt="Inside the Lyrics Banner"
-             class="banner-image">
-
-        <img src="../images/logo.png"
-             alt="Inside the Lyrics Logo"
-             class="center-logo">
-    </div>
-
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="../legends.html">Legends</a>
-        <a href="../songs.html">Songs</a>
-        <a href="../bands.html">Bands</a>
-        <a href="../history.html">History</a>
-        <a href="../videos.html">Videos</a>
-        <a href="../about.html">About</a>
-    </nav>
-
-</header>
-
-<main>
-
-<article class="artist-page">
-
-  <h1>🎸 The OK Jazz Musicians Directory</h1>
-
-  <p class="intro">
-    OK Jazz was shaped by generations of singers, guitarists,
-    percussionists and instrumentalists. This directory brings
-    together musicians named in the Inside the Lyrics OK Jazz archive.
-  </p>
-
-  <section>
-
-    <h2>About this directory</h2>
-
-    <p>
-      This is a historical reference based on our OK Jazz research notes.
-      It is not a claim to include every musician who ever performed
-      with the orchestra.
-    </p>
-
-    <p>
-      Where the archive does not specify an instrument or role,
-      this directory says so rather than guessing.
-    </p>
-
-    <a href="ok-jazz.html">
-      ← Read the complete OK Jazz history
-    </a>
-
-  </section>
-
-  <section>
-
-    <h2>🔎 Find a musician</h2>
-
-    <div class="directory-tools">
-
-      <input
-        type="search"
-        id="musicianSearch"
-        placeholder="Search by name, instrument or role..."
-        aria-label="Search musicians">
-
-      <select id="roleFilter" aria-label="Filter musicians">
-
-        <option value="">All roles</option>
-        <option value="vocals">Vocals</option>
-        <option value="guitar">Guitar</option>
-        <option value="bass">Bass</option>
-        <option value="drums">Drums & percussion</option>
-        <option value="horn">Saxophone, trumpet & clarinet</option>
-        <option value="other">Other / not specified</option>
-
-      </select>
-
-    </div>
-
-    <p class="directory-count" id="resultCount"></p>
-
-    <div class="directory-table-wrap">
-
-      <table class="directory-table">
-
-        <thead>
-          <tr>
-            <th>Musician</th>
-            <th>Role / Instrument</th>
-            <th>Period recorded</th>
-            <th>Archive notes</th>
-          </tr>
-        </thead>
-
-        <tbody id="musicianRows">
-
-          <tr data-role="guitar">
-            <td>Franco Luambo</td>
-            <td>Solo guitar; vocals</td>
-            <td>1956–1989</td>
-            <td>Central figure and bandleader of OK Jazz.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Daniel Loubelo “De La Lune”</td>
-            <td>Rhythm guitar</td>
-            <td>Early years; returned in 1962</td>
-            <td>Also written as De la Lune.</td>
-          </tr>
-
-          <tr data-role="bass">
-            <td>Roitelet / Roitalet</td>
-            <td>Bass</td>
-            <td>1956–1960; later lists also mention him</td>
-            <td>The notes say he left in 1960 but include him in later line-ups. Chronology needs checking.</td>
-          </tr>
-
-          <tr data-role="drums">
-            <td>Dandy</td>
-            <td>Drums</td>
-            <td>Early line-up</td>
-            <td>Named in the early musicians list.</td>
-          </tr>
-
-          <tr data-role="drums">
-            <td>Libertin / Liberlin</td>
-            <td>Drums and congas</td>
-            <td>Early years–1977 lists</td>
-            <td>Both spellings occur in the notes.</td>
-          </tr>
-
-          <tr data-role="drums">
-            <td>La Monta</td>
-            <td>Drums</td>
-            <td>Early years–1977 lists</td>
-            <td>Listed among the percussion section.</td>
-          </tr>
-
-          <tr data-role="drums">
-            <td>Bosuma Dessoin</td>
-            <td>Rhythm guitar; congas and drums</td>
-            <td>Early years–1978</td>
-            <td>Spelling variants occur in the notes. Listed on percussion for “Tailleurs”.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Laudot Philippe “Rossignol”</td>
-            <td>Lead vocals</td>
-            <td>Early years–1957</td>
-            <td>Left the group in 1957 according to the archive.</td>
-          </tr>
-
-          <tr data-role="other">
-            <td>Lièvre</td>
-            <td>Flute</td>
-            <td>Early years–1977 lists</td>
-            <td>Also written as Lievre.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Jean Serge Essous</td>
-            <td>Saxophone and clarinet</td>
-            <td>Early years</td>
-            <td>Named among the early musicians.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Vicky Longomba</td>
-            <td>Vocals</td>
-            <td>Early years; returned 1962; left 1970</td>
-            <td>One of the important vocalists in the orchestra.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Edo Nganga</td>
-            <td>Vocals</td>
-            <td>Joined 1957; later line-ups</td>
-            <td>Reappears in the 1963 and later line-up notes.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Willy Mbemba</td>
-            <td>Trumpet</td>
-            <td>1957; listed in 1960–1961 notes</td>
-            <td>Marked as imprisoned in the 1960 and 1961 notes.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Nino Malapet</td>
-            <td>Trumpet</td>
-            <td>1957</td>
-            <td>Listed as temporary cover for the trumpet role.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Isaac Musekiwa</td>
-            <td>Saxophone</td>
-            <td>Later 1950s–1978</td>
-            <td>Also appears as Isaack in one line-up list.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Kouka Célestine</td>
-            <td>Vocals</td>
-            <td>1957–1960</td>
-            <td>Also recorded as Célestine Kouka.</td>
-          </tr>
-
-          <tr data-role="other">
-            <td>Edo Lutula</td>
-            <td>Vocals; clarinet</td>
-            <td>1957 onward</td>
-            <td>The early notes give clarinet; later line-ups also list vocals.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Armando Antoine “Brazzos”</td>
-            <td>Rhythm guitar</td>
-            <td>1957; returned in 1972</td>
-            <td>Rejoined after a period with Orchestra Revolution.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Leon Bolhen</td>
-            <td>Lead guitar</td>
-            <td>After 1960</td>
-            <td>Joined after Brazzos departed, according to the early-history notes.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Mulumba Joseph “Mujos”</td>
-            <td>Vocals</td>
-            <td>1960; later return noted</td>
-            <td>Recruited while Vicky was away; replaced by Kwamy Munsi in the 1961 list.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Simaro Lutumba</td>
-            <td>Rhythm guitar</td>
-            <td>1960 sessions; later line-ups</td>
-            <td>Initially joined for recording sessions and later became a major figure in OK Jazz.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Kwamy Munsi</td>
-            <td>Vocals</td>
-            <td>Listed from 1961; comeback in 1970</td>
-            <td>Replaced Mujos in the 1961 line-up notes.</td>
-          </tr>
-
-          <tr data-role="bass">
-            <td>Piccolo Tshiamala</td>
-            <td>Bass guitar</td>
-            <td>1961–1966 notes</td>
-            <td>Listed as replacing De La Lune.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Verckys Kiamuangana Mateta</td>
-            <td>Saxophone</td>
-            <td>Joined 1962; left 1967</td>
-            <td>Later founded Orchestra Vévé.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Dele Pedro</td>
-            <td>Tenor saxophone</td>
-            <td>Joined 1962</td>
-            <td>Long-serving member of the orchestra.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Lola Checain / Lola Chacain</td>
-            <td>Vocals</td>
-            <td>Joined 1963</td>
-            <td>Spelling varies in the archive notes.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Michael Boyibanda</td>
-            <td>Vocals</td>
-            <td>1963/1964 onward</td>
-            <td>The notes give both 1963 and 1964 as his arrival period.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Youlou Mabiala</td>
-            <td>Vocals</td>
-            <td>Joined 1965; returned 1974</td>
-            <td>Left in 1972 and later returned.</td>
-          </tr>
-
-          <tr data-role="bass">
-            <td>Celi Bitchoumanou “Bitchou”</td>
-            <td>Bass</td>
-            <td>Joined 1965; left 1972</td>
-            <td>Also called Celi Bitchou.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Djeskin</td>
-            <td>Vocals</td>
-            <td>Listed in 1966</td>
-            <td>Named among musicians who defected to Orchestra Revolution.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Jojo</td>
-            <td>Vocals</td>
-            <td>Listed in 1966</td>
-            <td>Named among musicians who defected to Orchestra Revolution.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Moce Fan Fan</td>
-            <td>Solo guitar</td>
-            <td>Joined 1967; left 1972</td>
-            <td>Later led SOMO SOMO.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Randot Kasongo wa Kasongo</td>
-            <td>Saxophone</td>
-            <td>Joined 1967</td>
-            <td>Joined from Negro Succes, according to the notes.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Barami Miranda</td>
-            <td>Trumpet</td>
-            <td>Joined 1971</td>
-            <td>One of the four trumpeters recruited with the Francolettes.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Adamo Seye</td>
-            <td>Trumpet</td>
-            <td>Joined 1971</td>
-            <td>One of the four trumpeters recruited with the Francolettes.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Kapitena Kasongo</td>
-            <td>Trumpet</td>
-            <td>Joined 1971</td>
-            <td>Also listed in the “Tailleurs” personnel.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Vieux Kalloux</td>
-            <td>Trumpet</td>
-            <td>Joined 1971</td>
-            <td>One of the four trumpeters recruited with the Francolettes.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Sam Mangwana</td>
-            <td>Vocals</td>
-            <td>Joined 1972; left 1975</td>
-            <td>Later joined African All Stars.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Mayaula Mayoni</td>
-            <td>Songwriter; rhythm guitar</td>
-            <td>Joined 1973</td>
-            <td>Joined after his football career with Vita Club, according to the notes.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Josky Kiambukuta</td>
-            <td>Vocals</td>
-            <td>Joined 1973</td>
-            <td>Listed among the vocalists on “Tailleurs”.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Blaise Mayanda “Wuta Mayi”</td>
-            <td>Vocals</td>
-            <td>Joined 1973</td>
-            <td>Listed as a vocalist in the 1973 line-up.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Thierry Mantuika</td>
-            <td>Guitar</td>
-            <td>Joined 1973</td>
-            <td>Described in the notes as a guitarist from Thu.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Gege Mangaya</td>
-            <td>Guitar</td>
-            <td>Joined 1973</td>
-            <td>Listed as a guitarist from Zaina.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Ndombe Opetum</td>
-            <td>Vocals</td>
-            <td>Joined 1974</td>
-            <td>Joined from Tabu Ley's band, according to the notes.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Empompo “Deyesce” Loway</td>
-            <td>Saxophone</td>
-            <td>Joined 1974</td>
-            <td>Also listed in the “Tailleurs” horn section.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Mavituki “Visi” Michelino</td>
-            <td>Solo guitar</td>
-            <td>Joined 1974</td>
-            <td>Described as a solo-guitar specialist.</td>
-          </tr>
-
-          <tr data-role="bass">
-            <td>Mpudi Decca</td>
-            <td>Bass</td>
-            <td>Joined 1972</td>
-            <td>Joined from Orchestra Vedette.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Ntesa Dalienst</td>
-            <td>Vocals</td>
-            <td>Joined September 1976</td>
-            <td>Left briefly and later rejoined, according to the notes.</td>
-          </tr>
-
-          <tr data-role="other">
-            <td>Jerry Dialungana</td>
-            <td>Not specified in archive notes</td>
-            <td>Joined September 1976</td>
-            <td>Joined from Les Grands Maquisards, according to the notes.</td>
-          </tr>
-
-          <tr data-role="other">
-            <td>Lokombe Ntal</td>
-            <td>Not specified in archive notes</td>
-            <td>Joined 1976</td>
-            <td>Instrument or role is not specified in the supplied line-up list.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Dizzy Mandjeku</td>
-            <td>Guitar role not specified</td>
-            <td>Listed from 1976</td>
-            <td>The OK Jazz connection needs further confirmation.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Dialu Lukoki “Dialtho”</td>
-            <td>Vocals</td>
-            <td>Joined 1977–1978</td>
-            <td>Spelling also appears as Diallu Lukoki.</td>
-          </tr>
-
-          <tr data-role="vocals">
-            <td>Djo Mpoyi Kaninda</td>
-            <td>Vocals</td>
-            <td>Joined 1977–1978</td>
-            <td>The archive records that Djo Mpoyi Kaninda joined as a vocalist.</td>
-          </tr>
-
-          <tr data-role="guitar">
-            <td>Papa Noël Nedule</td>
-            <td>Solo guitar on “Tailleurs”</td>
-            <td>Joined 1978</td>
-            <td>Listed as solo guitarist on “Tailleurs”.</td>
-          </tr>
-
-          <tr data-role="other">
-            <td>Mackos</td>
-            <td>Not specified in archive notes</td>
-            <td>1978</td>
-            <td>Named in the 1978 arrest account.</td>
-          </tr>
-
-          <tr data-role="other">
-            <td>Flavien</td>
-            <td>Not specified in archive notes</td>
-            <td>1978</td>
-            <td>Named in the 1978 arrest account. Identity needs confirmation.</td>
-          </tr>
-
-          <tr data-role="drums">
-            <td>Ntoya</td>
-            <td>Drums</td>
-            <td>1978</td>
-            <td>Listed as drummer on “Tailleurs”.</td>
-          </tr>
-
-          <tr data-role="horn">
-            <td>Matalanza</td>
-            <td>Second tenor horn</td>
-            <td>1978</td>
-            <td>Listed in the horn section for “Tailleurs”.</td>
-          </tr>
-
-        </tbody>
-      </table>
-
-    </div>
-
-  </section>
-
-  <section>
-
-    <h2>📝 Historical notes requiring verification</h2>
-
-    <div class="archive-note">
-
-      <p>
-        The research notes contain spelling variations such as
-        Liberlin/Libertin, Roitelet/Roitalet, Lola Checain/Chacain,
-        and different spellings of Dialtho.
-      </p>
-
-      <p>
-        Roitelet is recorded as leaving in 1960 but also appears in
-        later line-up lists. Michael Boyibanda's arrival is dated
-        1963 in one place and 1964 in another.
-      </p>
-
-      <p>
-        These details are flagged rather than silently reconciled.
-        Further documentary evidence can be used to update the directory.
-      </p>
-
-    </div>
-
-  </section>
-
-  <section class="related-archive">
-    <h2>🎼 Continue Exploring OK Jazz</h2>
-
-    <p>
-        Continue discovering the musicians, history and musical
-        legacy of this legendary Congolese orchestra.
-    </p>
-
-    <ul>
-        <li>
-            <a href="ok-jazz.html">
-                Read the Complete OK Jazz History →
-            </a>
-        </li>
-
-        <li>
-            <a href="ok-jazz-timeline.html">
-                Explore the OK Jazz Historical Timeline →
-            </a>
-        </li>
-
-        <li>
-            <a href="../bands.html">
-                Explore Other African Orchestras →
-            </a>
-        </li>
-    </ul>
-</section>
-
-
-</article>
-
-</main>
-
-<footer>
-  <h3>Inside the Lyrics with Sir Wakho</h3>
-  <p>Preserving Africa's musical heritage one story at a time.</p>
-
-    
-    <section class="related-archive">
-    <h2>Discover More About OK Jazz</h2>
-
-    <p>
-        The musicians listed here were part of a remarkable
-        musical journey spanning several decades.
-        Explore the band's history to understand their
-        contributions and the evolution of OK Jazz.
-    </p>
-
-    <div class="archive-links">
-        <a href="ok-jazz.html">
-            📖 Read the Complete OK Jazz History
-        </a>
-
-        <a href="ok-jazz-timeline.html">
-            📅 Explore the OK Jazz Timeline
-        </a>
-
-        <a href="../bands.html">
-            🎶 Return to African Bands
-        </a>
-    </div>
-</section>
-    
-</footer>
-
-<script>
-
-  const searchInput = document.getElementById("musicianSearch");
-  const roleFilter = document.getElementById("roleFilter");
-  const rows = Array.from(
-    document.querySelectorAll("#musicianRows tr")
-  );
-
-  const resultCount = document.getElementById("resultCount");
-
-  function filterMusicians() {
-
-    const query = searchInput.value.trim().toLowerCase();
-    const role = roleFilter.value;
-
-    let visible = 0;
-
-    rows.forEach(row => {
-
-      const matchesText =
-        row.textContent.toLowerCase().includes(query);
-
-      const matchesRole =
-        !role || row.dataset.role === role;
-
-      const show = matchesText && matchesRole;
-
-      row.hidden = !show;
-
-      if (show) visible++;
-
-    });
-
-    resultCount.textContent =
-      `Showing ${visible} of ${rows.length} musicians`;
-
-  }
-
-  searchInput.addEventListener("input", filterMusicians);
-
-  roleFilter.addEventListener("change", filterMusicians);
-
-  filterMusicians();
-
-</script>
-
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="brand-banner">
+            <img src="../images/banner.jpg"
+                 alt="Inside the Lyrics Banner"
+                 class="banner-image">
+
+            <img src="../images/logo.png"
+                 alt="Inside the Lyrics Logo"
+                 class="center-logo">
+        </div>
+
+        <nav aria-label="Main navigation">
+            <a href="../index.html">Home</a>
+            <a href="../legends.html">Legends</a>
+            <a href="../songs.html">Songs</a>
+            <a href="../bands.html">Bands</a>
+            <a href="../history.html">History</a>
+            <a href="../videos.html">Videos</a>
+            <a href="../about.html">About</a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <article class="artist-page">
+            <h1>🎸 The OK Jazz Musicians Directory</h1>
+
+            <p class="intro">
+                OK Jazz was shaped by generations of singers, guitarists,
+                percussionists and instrumentalists. This directory brings
+                together musicians named in the Inside the Lyrics OK Jazz archive.
+            </p>
+
+            <section aria-labelledby="about-directory-heading">
+                <h2 id="about-directory-heading">About this directory</h2>
+
+                <p>
+                    This is a historical reference based on our OK Jazz research notes.
+                    It is not a claim to include every musician who ever performed
+                    with the orchestra.
+                </p>
+
+                <p>
+                    Where the archive does not specify an instrument or role,
+                    this directory says so rather than guessing.
+                </p>
+
+                <a href="ok-jazz.html">← Read the complete OK Jazz history</a>
+            </section>
+
+            <section aria-labelledby="find-musician-heading">
+                <h2 id="find-musician-heading">🔎 Find a musician</h2>
+
+                <div class="directory-tools">
+                    <div class="directory-field">
+                        <label for="musicianSearch">Search the directory</label>
+                        <input
+                            type="search"
+                            id="musicianSearch"
+                            placeholder="Name, instrument or role"
+                            autocomplete="off">
+                    </div>
+
+                    <div class="directory-field">
+                        <label for="roleFilter">Filter by role</label>
+                        <select id="roleFilter">
+                            <option value="">All roles</option>
+                            <option value="vocals">Vocals</option>
+                            <option value="guitar">Guitar</option>
+                            <option value="bass">Bass</option>
+                            <option value="drums">Drums &amp; percussion</option>
+                            <option value="horn">Saxophone, trumpet &amp; clarinet</option>
+                            <option value="other">Other / not specified</option>
+                        </select>
+                    </div>
+
+                    <button type="button" id="clearFilters">Clear filters</button>
+                </div>
+
+                <p class="directory-count"
+                   id="resultCount"
+                   role="status"
+                   aria-live="polite"
+                   aria-atomic="true"></p>
+
+                <div class="directory-table-wrap">
+                    <table class="directory-table">
+                        <caption class="visually-hidden">
+                            Musicians named in the Inside the Lyrics OK Jazz archive
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Musician</th>
+                                <th scope="col">Role / Instrument</th>
+                                <th scope="col">Period recorded</th>
+                                <th scope="col">Archive notes</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="musicianRows">
+                            <tr data-role="guitar">
+                                <td>Franco Luambo</td>
+                                <td>Solo guitar; vocals</td>
+                                <td>1956–1989</td>
+                                <td>Central figure and bandleader of OK Jazz.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Daniel Loubelo “De La Lune”</td>
+                                <td>Rhythm guitar</td>
+                                <td>Early years; returned in 1962</td>
+                                <td>Also written as De la Lune.</td>
+                            </tr>
+                            <tr data-role="bass">
+                                <td>Roitelet / Roitalet</td>
+                                <td>Bass</td>
+                                <td>1956–1960; later lists also mention him</td>
+                                <td>The notes say he left in 1960 but include him in later line-ups. Chronology needs checking.</td>
+                            </tr>
+                            <tr data-role="drums">
+                                <td>Dandy</td>
+                                <td>Drums</td>
+                                <td>Early line-up</td>
+                                <td>Named in the early musicians list.</td>
+                            </tr>
+                            <tr data-role="drums">
+                                <td>Libertin / Liberlin</td>
+                                <td>Drums and congas</td>
+                                <td>Early years–1977 lists</td>
+                                <td>Both spellings occur in the notes.</td>
+                            </tr>
+                            <tr data-role="drums">
+                                <td>La Monta</td>
+                                <td>Drums</td>
+                                <td>Early years–1977 lists</td>
+                                <td>Listed among the percussion section.</td>
+                            </tr>
+                            <tr data-role="drums">
+                                <td>Bosuma Dessoin</td>
+                                <td>Rhythm guitar; congas and drums</td>
+                                <td>Early years–1978</td>
+                                <td>Spelling variants occur in the notes. Listed on percussion for “Tailleurs”.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Laudot Philippe “Rossignol”</td>
+                                <td>Lead vocals</td>
+                                <td>Early years–1957</td>
+                                <td>Left the group in 1957 according to the archive.</td>
+                            </tr>
+                            <tr data-role="other">
+                                <td>Lièvre</td>
+                                <td>Flute</td>
+                                <td>Early years–1977 lists</td>
+                                <td>Also written as Lievre.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Jean Serge Essous</td>
+                                <td>Saxophone and clarinet</td>
+                                <td>Early years</td>
+                                <td>Named among the early musicians.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Vicky Longomba</td>
+                                <td>Vocals</td>
+                                <td>Early years; returned 1962; left 1970</td>
+                                <td>One of the important vocalists in the orchestra.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Edo Nganga</td>
+                                <td>Vocals</td>
+                                <td>Joined 1957; later line-ups</td>
+                                <td>Reappears in the 1963 and later line-up notes.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Willy Mbemba</td>
+                                <td>Trumpet</td>
+                                <td>1957; listed in 1960–1961 notes</td>
+                                <td>Marked as imprisoned in the 1960 and 1961 notes.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Nino Malapet</td>
+                                <td>Trumpet</td>
+                                <td>1957</td>
+                                <td>Listed as temporary cover for the trumpet role.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Isaac Musekiwa</td>
+                                <td>Saxophone</td>
+                                <td>Later 1950s–1978</td>
+                                <td>Also appears as Isaack in one line-up list.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Kouka Célestine</td>
+                                <td>Vocals</td>
+                                <td>1957–1960</td>
+                                <td>Also recorded as Célestine Kouka.</td>
+                            </tr>
+                            <tr data-role="other">
+                                <td>Edo Lutula</td>
+                                <td>Vocals; clarinet</td>
+                                <td>1957 onward</td>
+                                <td>The early notes give clarinet; later line-ups also list vocals.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Armando Antoine “Brazzos”</td>
+                                <td>Rhythm guitar</td>
+                                <td>1957; returned in 1972</td>
+                                <td>Rejoined after a period with Orchestra Revolution.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Leon Bolhen</td>
+                                <td>Lead guitar</td>
+                                <td>After 1960</td>
+                                <td>Joined after Brazzos departed, according to the early-history notes.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Mulumba Joseph “Mujos”</td>
+                                <td>Vocals</td>
+                                <td>1960; later return noted</td>
+                                <td>Recruited while Vicky was away; replaced by Kwamy Munsi in the 1961 list.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Simaro Lutumba</td>
+                                <td>Rhythm guitar</td>
+                                <td>1960 sessions; later line-ups</td>
+                                <td>Initially joined for recording sessions and later became a major figure in OK Jazz.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Kwamy Munsi</td>
+                                <td>Vocals</td>
+                                <td>Listed from 1961; comeback in 1970</td>
+                                <td>Replaced Mujos in the 1961 line-up notes.</td>
+                            </tr>
+                            <tr data-role="bass">
+                                <td>Piccolo Tshiamala</td>
+                                <td>Bass guitar</td>
+                                <td>1961–1966 notes</td>
+                                <td>Listed as replacing De La Lune.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Verckys Kiamuangana Mateta</td>
+                                <td>Saxophone</td>
+                                <td>Joined 1962; left 1967</td>
+                                <td>Later founded Orchestra Vévé.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Dele Pedro</td>
+                                <td>Tenor saxophone</td>
+                                <td>Joined 1962</td>
+                                <td>Long-serving member of the orchestra.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Lola Checain / Lola Chacain</td>
+                                <td>Vocals</td>
+                                <td>Joined 1963</td>
+                                <td>Spelling varies in the archive notes.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Michael Boyibanda</td>
+                                <td>Vocals</td>
+                                <td>1963/1964 onward</td>
+                                <td>The notes give both 1963 and 1964 as his arrival period.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Youlou Mabiala</td>
+                                <td>Vocals</td>
+                                <td>Joined 1965; returned 1974</td>
+                                <td>Left in 1972 and later returned.</td>
+                            </tr>
+                            <tr data-role="bass">
+                                <td>Celi Bitchoumanou “Bitchou”</td>
+                                <td>Bass</td>
+                                <td>Joined 1965; left 1972</td>
+                                <td>Also called Celi Bitchou.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Djeskin</td>
+                                <td>Vocals</td>
+                                <td>Listed in 1966</td>
+                                <td>Named among musicians who defected to Orchestra Revolution.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Jojo</td>
+                                <td>Vocals</td>
+                                <td>Listed in 1966</td>
+                                <td>Named among musicians who defected to Orchestra Revolution.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Moce Fan Fan</td>
+                                <td>Solo guitar</td>
+                                <td>Joined 1967; left 1972</td>
+                                <td>Later led SOMO SOMO.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Randot Kasongo wa Kasongo</td>
+                                <td>Saxophone</td>
+                                <td>Joined 1967</td>
+                                <td>Joined from Negro Succes, according to the notes.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Barami Miranda</td>
+                                <td>Trumpet</td>
+                                <td>Joined 1971</td>
+                                <td>One of the four trumpeters recruited with the Francolettes.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Adamo Seye</td>
+                                <td>Trumpet</td>
+                                <td>Joined 1971</td>
+                                <td>One of the four trumpeters recruited with the Francolettes.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Kapitena Kasongo</td>
+                                <td>Trumpet</td>
+                                <td>Joined 1971</td>
+                                <td>Also listed in the “Tailleurs” personnel.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Vieux Kalloux</td>
+                                <td>Trumpet</td>
+                                <td>Joined 1971</td>
+                                <td>One of the four trumpeters recruited with the Francolettes.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Sam Mangwana</td>
+                                <td>Vocals</td>
+                                <td>Joined 1972; left 1975</td>
+                                <td>Later joined African All Stars.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Mayaula Mayoni</td>
+                                <td>Songwriter; rhythm guitar</td>
+                                <td>Joined 1973</td>
+                                <td>Joined after his football career with Vita Club, according to the notes.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Josky Kiambukuta</td>
+                                <td>Vocals</td>
+                                <td>Joined 1973</td>
+                                <td>Listed among the vocalists on “Tailleurs”.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Blaise Mayanda “Wuta Mayi”</td>
+                                <td>Vocals</td>
+                                <td>Joined 1973</td>
+                                <td>Listed as a vocalist in the 1973 line-up.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Thierry Mantuika</td>
+                                <td>Guitar</td>
+                                <td>Joined 1973</td>
+                                <td>Described in the notes as a guitarist from Thu.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Gege Mangaya</td>
+                                <td>Guitar</td>
+                                <td>Joined 1973</td>
+                                <td>Listed as a guitarist from Zaina.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Ndombe Opetum</td>
+                                <td>Vocals</td>
+                                <td>Joined 1974</td>
+                                <td>Joined from Tabu Ley's band, according to the notes.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Empompo “Deyesce” Loway</td>
+                                <td>Saxophone</td>
+                                <td>Joined 1974</td>
+                                <td>Also listed in the “Tailleurs” horn section.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Mavituki “Visi” Michelino</td>
+                                <td>Solo guitar</td>
+                                <td>Joined 1974</td>
+                                <td>Described as a solo-guitar specialist.</td>
+                            </tr>
+                            <tr data-role="bass">
+                                <td>Mpudi Decca</td>
+                                <td>Bass</td>
+                                <td>Joined 1972</td>
+                                <td>Joined from Orchestra Vedette.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Ntesa Dalienst</td>
+                                <td>Vocals</td>
+                                <td>Joined September 1976</td>
+                                <td>Left briefly and later rejoined, according to the notes.</td>
+                            </tr>
+                            <tr data-role="other">
+                                <td>Jerry Dialungana</td>
+                                <td>Not specified in archive notes</td>
+                                <td>Joined September 1976</td>
+                                <td>Joined from Les Grands Maquisards, according to the notes.</td>
+                            </tr>
+                            <tr data-role="other">
+                                <td>Lokombe Ntal</td>
+                                <td>Not specified in archive notes</td>
+                                <td>Joined 1976</td>
+                                <td>Instrument or role is not specified in the supplied line-up list.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Dizzy Mandjeku</td>
+                                <td>Guitar role not specified</td>
+                                <td>Listed from 1976</td>
+                                <td>The OK Jazz connection needs further confirmation.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Dialu Lukoki “Dialtho”</td>
+                                <td>Vocals</td>
+                                <td>Joined 1977–1978</td>
+                                <td>Spelling also appears as Diallu Lukoki.</td>
+                            </tr>
+                            <tr data-role="vocals">
+                                <td>Djo Mpoyi Kaninda</td>
+                                <td>Vocals</td>
+                                <td>Joined 1977–1978</td>
+                                <td>The archive records that Djo Mpoyi Kaninda joined as a vocalist.</td>
+                            </tr>
+                            <tr data-role="guitar">
+                                <td>Papa Noël Nedule</td>
+                                <td>Solo guitar on “Tailleurs”</td>
+                                <td>Joined 1978</td>
+                                <td>Listed as solo guitarist on “Tailleurs”.</td>
+                            </tr>
+                            <tr data-role="other">
+                                <td>Mackos</td>
+                                <td>Not specified in archive notes</td>
+                                <td>1978</td>
+                                <td>Named in the 1978 arrest account.</td>
+                            </tr>
+                            <tr data-role="other">
+                                <td>Flavien</td>
+                                <td>Not specified in archive notes</td>
+                                <td>1978</td>
+                                <td>Named in the 1978 arrest account. Identity needs confirmation.</td>
+                            </tr>
+                            <tr data-role="drums">
+                                <td>Ntoya</td>
+                                <td>Drums</td>
+                                <td>1978</td>
+                                <td>Listed as drummer on “Tailleurs”.</td>
+                            </tr>
+                            <tr data-role="horn">
+                                <td>Matalanza</td>
+                                <td>Second tenor horn</td>
+                                <td>1978</td>
+                                <td>Listed in the horn section for “Tailleurs”.</td>
+                            </tr>
+
+                            <tr id="noResultsRow" hidden>
+                                <td colspan="4">No musicians match your search and selected role.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section aria-labelledby="historical-notes-heading">
+                <h2 id="historical-notes-heading">📝 Historical notes requiring verification</h2>
+
+                <div class="archive-note">
+                    <p>
+                        The research notes contain spelling variations such as
+                        Liberlin/Libertin, Roitelet/Roitalet, Lola Checain/Chacain,
+                        and different spellings of Dialtho.
+                    </p>
+
+                    <p>
+                        Roitelet is recorded as leaving in 1960 but also appears in
+                        later line-up lists. Michael Boyibanda's arrival is dated
+                        1963 in one place and 1964 in another.
+                    </p>
+
+                    <p>
+                        These details are flagged rather than silently reconciled.
+                        Further documentary evidence can be used to update the directory.
+                    </p>
+                </div>
+            </section>
+
+            <section class="related-archive" aria-labelledby="related-ok-jazz-heading">
+                <h2 id="related-ok-jazz-heading">🎼 Continue Exploring OK Jazz</h2>
+
+                <p>
+                    Continue discovering the musicians, history and musical legacy
+                    of this legendary Congolese orchestra.
+                </p>
+
+                <nav aria-label="Related OK Jazz pages">
+                    <ul>
+                        <li>
+                            <a href="ok-jazz.html">📖 Read the Complete OK Jazz History</a>
+                        </li>
+                        <li>
+                            <a href="ok-jazz-timeline.html">📅 Explore the OK Jazz Historical Timeline</a>
+                        </li>
+                        <li>
+                            <a href="../bands.html">🎶 Explore Other African Orchestras</a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <h3>Inside the Lyrics with Sir Wakho</h3>
+        <p>Preserving Africa's musical heritage one story at a time.</p>
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById("musicianSearch");
+        const roleFilter = document.getElementById("roleFilter");
+        const clearFiltersButton = document.getElementById("clearFilters");
+        const resultCount = document.getElementById("resultCount");
+        const noResultsRow = document.getElementById("noResultsRow");
+
+        const rows = Array.from(
+            document.querySelectorAll("#musicianRows tr[data-role]")
+        );
+
+        function filterMusicians() {
+            const query = searchInput.value.trim().toLocaleLowerCase();
+            const selectedRole = roleFilter.value;
+            let visibleCount = 0;
+
+            rows.forEach((row) => {
+                const searchableText = [
+                    row.cells[0]?.textContent,
+                    row.cells[1]?.textContent,
+                    row.cells[3]?.textContent
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLocaleLowerCase();
+
+                const matchesText = !query || searchableText.includes(query);
+                const matchesRole =
+                    !selectedRole || row.dataset.role === selectedRole;
+                const isVisible = matchesText && matchesRole;
+
+                row.hidden = !isVisible;
+
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            noResultsRow.hidden = visibleCount > 0;
+            resultCount.textContent =
+                `Showing ${visibleCount} of ${rows.length} musicians`;
+        }
+
+        searchInput.addEventListener("input", filterMusicians);
+        roleFilter.addEventListener("change", filterMusicians);
+
+        clearFiltersButton.addEventListener("click", () => {
+            searchInput.value = "";
+            roleFilter.value = "";
+            filterMusicians();
+            searchInput.focus();
+        });
+
+        searchInput.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && searchInput.value) {
+                searchInput.value = "";
+                filterMusicians();
+            }
+        });
+
+        filterMusicians();
+    </script>
 </body>
-</html>
 
+</html>
