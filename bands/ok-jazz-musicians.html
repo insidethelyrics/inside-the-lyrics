@@ -667,24 +667,32 @@
             document.querySelectorAll("#musicianRows tr[data-role]")
         );
 
+        const rowsData = rows.map((row) => {
+            const searchableText = [
+                row.cells[0]?.textContent,
+                row.cells[1]?.textContent,
+                row.cells[3]?.textContent
+            ]
+                .filter(Boolean)
+                .join(" ")
+                .trim()
+                .toLowerCase();
+
+            return {
+                row,
+                searchableText,
+                role: row.dataset.role
+            };
+        });
+
         function filterMusicians() {
-            const query = searchInput.value.trim().toLocaleLowerCase();
+            const query = searchInput.value.trim().toLowerCase();
             const selectedRole = roleFilter.value;
             let visibleCount = 0;
 
-            rows.forEach((row) => {
-                const searchableText = [
-                    row.cells[0]?.textContent,
-                    row.cells[1]?.textContent,
-                    row.cells[3]?.textContent
-                ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .toLocaleLowerCase();
-
+            rowsData.forEach(({ row, searchableText, role }) => {
                 const matchesText = !query || searchableText.includes(query);
-                const matchesRole =
-                    !selectedRole || row.dataset.role === selectedRole;
+                const matchesRole = !selectedRole || role === selectedRole;
                 const isVisible = matchesText && matchesRole;
 
                 row.hidden = !isVisible;
@@ -695,11 +703,16 @@
             });
 
             noResultsRow.hidden = visibleCount > 0;
-            resultCount.textContent =
-                `Showing ${visibleCount} of ${rows.length} musicians`;
+            resultCount.textContent = `Showing ${visibleCount} of ${rows.length} musicians`;
         }
 
-        searchInput.addEventListener("input", filterMusicians);
+        let filterTimer;
+
+        searchInput.addEventListener("input", () => {
+            clearTimeout(filterTimer);
+            filterTimer = setTimeout(filterMusicians, 120);
+        });
+
         roleFilter.addEventListener("change", filterMusicians);
 
         clearFiltersButton.addEventListener("click", () => {
